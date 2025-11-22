@@ -82,7 +82,7 @@ func cType(dt string) string {
 
 func generateCCode(p *parser.Parser) string {
 	var sb strings.Builder
-	sb.WriteString("#include \"minibuf.h\"\n#include <string.h>\n#include <stdio.h>\n#include <stdlib.h>\n\n")
+	sb.WriteString("#include \"minibuf.h\"\n#include <string.h>\n#include <stdio.h>\n#include <stdlib.h>\n#include <math.h>\n\n")
 	if val, ok := p.Config["float_precision"]; ok {
 		if f, ok := val.(float64); ok {
 			sb.WriteString(fmt.Sprintf("int mb_float_precision = %d;\n\n", int(f)))
@@ -160,16 +160,15 @@ func generateCCode(p *parser.Parser) string {
 			if idx == 0 {
 				sep = ""
 			}
-			sb.WriteString(fmt.Sprintf("    len += snprintf(pos, buf_size - len, \"%s", sep))
 			switch field.DataType {
 			case "bool":
-				sb.WriteString(fmt.Sprintf("%%s\", in->%s ? \"T\" : \"F\");\n", field.Name))
+				sb.WriteString(fmt.Sprintf("    len += snprintf(pos, buf_size - len, \"%s%%s\", in->%s ? \"T\" : \"F\");\n", sep, field.Name))
 			case "number":
-				sb.WriteString(fmt.Sprintf("%%d\", in->%s);\n", field.Name))
+				sb.WriteString(fmt.Sprintf("    len += snprintf(pos, buf_size - len, \"%s%%d\", in->%s);\n", sep, field.Name))
 			case "float":
-				sb.WriteString(fmt.Sprintf("%%.*f\", mb_float_precision, in->%s);\n", field.Name))
+				sb.WriteString(fmt.Sprintf("    len += snprintf(pos, buf_size - len, \"%s%%s%%d.%%0*d\", in->%s < 0 ? \"-\" : \"\", abs((int)in->%s), mb_float_precision, (int)((fabsf(in->%s) - abs((int)in->%s)) * powf(10, mb_float_precision) + 0.5f));\n", sep, field.Name, field.Name, field.Name, field.Name))
 			case "string":
-				sb.WriteString(fmt.Sprintf("%%s\", in->%s);\n", field.Name))
+				sb.WriteString(fmt.Sprintf("    len += snprintf(pos, buf_size - len, \"%s%%s\", in->%s);\n", sep, field.Name))
 			}
 			sb.WriteString("    if (len >= buf_size) return MB_ERR_BUFFER_TOO_SMALL;\n")
 			sb.WriteString("    pos = buf + len;\n")
