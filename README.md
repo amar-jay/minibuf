@@ -51,6 +51,12 @@ Config {
 <!--[4]T;1239998;Manan Junior;2333.111*AF   // CRC appended -->
 
 ## Usage
+#### Compilation
+To generate the parser code from the schema, use the `minibufc` tool:
+
+```bash
+minibufc schema.mb -o types/minibuf --c --ts # generates the types/minibuf.c and types/minibuf.h for C and types/minibuf.ts for TypeScript
+```
 
 #### C
 
