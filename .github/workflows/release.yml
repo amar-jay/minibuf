@@ -11,8 +11,7 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     permissions:
-      contents: write   # create tags, releases, upload assets
-
+      contents: write   # needed for creating releases and tags
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4
@@ -20,41 +19,14 @@ jobs:
       - name: Generate auto-tag
         id: tag
         run: |
-          TAG="build-$(date +%Y%m%d)"
+          TAG="$(date +%Y-%m-%d)"
           echo "tag=$TAG" >> $GITHUB_OUTPUT
 
-      - name: Create versioned GitHub Release
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.tag.outputs.tag }}
           name: "MiniBufc ${{ steps.tag.outputs.tag }}"
-          files: |
-            minibufc-linux-amd64/minibufc-linux-amd64
-            minibufc-windows-amd64/minibufc-windows-amd64.exe
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create or update 'latest' tag
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-          # fetch full repo so tag operations are allowed
-          git fetch --force --tags origin
-
-          # move or create the tag "latest"
-          git tag -f latest
-          git push -f origin latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create/Update 'latest' GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: latest
-          name: "MiniBufc (latest)"
-          prerelease: false
-          draft: false
           files: |
             minibufc-linux-amd64/minibufc-linux-amd64
             minibufc-windows-amd64/minibufc-windows-amd64.exe
