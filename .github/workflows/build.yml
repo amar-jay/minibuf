@@ -4,6 +4,8 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write   # needed for creating releases and tags
     defaults:
       run:
         working-directory: ./minibufc # your root directory
@@ -41,3 +43,20 @@ jobs:
         with:
           name: minibufc-windows-amd64
           path: ./minibufc/minibufc-windows-amd64.exe
+
+      - name: Generate auto-tag
+        id: tag
+        run: |
+          TAG="$(date +%Y-%m-%d-%H-%M-%S)"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.tag }}
+          name: "MiniBufc Release"
+          files: |
+            ./minibufc/minibufc-linux-amd64
+            ./minibufc/minibufc-windows-amd64.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
