@@ -32,7 +32,7 @@ jobs:
           tag_name: ${{ steps.tag.outputs.tag }}
           name: "MiniBufc Release"
           files: |
-            artifacts/minibufc-linux-amd64/minibufc-linux-amd64
-            artifacts/minibufc-windows-amd64/minibufc-windows-amd64.exe
+            artifacts/minibufc-linux-amd64/minibufc/minibufc-linux-amd64
+            artifacts/minibufc-windows-amd64/minibufc/minibufc-windows-amd64.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

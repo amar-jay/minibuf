@@ -34,10 +34,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: minibufc-linux-amd64
-          path: minibufc-linux-amd64
+          path: ./minibufc/minibufc-linux-amd64
 
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
         with:
           name: minibufc-windows-amd64
-          path: minibufc-windows-amd64.exe
+          path: ./minibufc/minibufc-windows-amd64.exe
