@@ -1,8 +1,0 @@
-Govt {
-    minister_count: number;
-    president_name: string;
-    president_term: number;
-    prime_minister_name: string;
-    vote_count: float;
-}
-

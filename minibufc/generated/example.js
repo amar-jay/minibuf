@@ -1,7 +1,7 @@
 import { VectorSerialize, ConfigSerialize, VectorParse, ConfigParse } from "./minibuf.js";
 
 const vector = { x: 1.234, y: 5.678, z: 9.012 };
-const config = { auto_restart: false, id: 42, user_name: "test", score: 99.5 };
+const config = { auto_restart: false, id: 42, user_name: "test dlaks; aldskj", score: 99.5 };
 
 const vectorStr = VectorSerialize(vector); // "[3]1.234;5.678;9.012"
 const configStr = ConfigSerialize(config); // "[4]F;42;test;99.500"

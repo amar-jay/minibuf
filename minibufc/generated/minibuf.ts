@@ -15,14 +15,6 @@ export interface Config {
   score: number;
 }
 
-export interface Govt {
-  minister_count: number;
-  president_name: string;
-  president_term: number;
-  prime_minister_name: string;
-  vote_count: number;
-}
-
 export function VectorParse(str: string): Vector {
   const start = str.indexOf('[');
   if (start === -1) throw new Error('Invalid format');
@@ -100,55 +92,6 @@ export function ConfigSerialize(obj: Config): string {
   str += `${obj.user_name}`;
   str += ';';
   str += `${obj.score.toFixed(floatPrecision)}`;
-  return str;
-}
-
-export function GovtParse(str: string): Govt {
-  const start = str.indexOf('[');
-  if (start === -1) throw new Error('Invalid format');
-  const end = str.indexOf(']', start);
-  if (end === -1) throw new Error('Invalid format');
-  const count = parseInt(str.slice(start + 1, end));
-  const values = str.slice(end + 1).split(';');
-  const result: Govt = {
-    minister_count: 0,
-    president_name: '',
-    president_term: 0,
-    prime_minister_name: '',
-    vote_count: 0.0,
-  };
-  for (let i = 0; i < Math.min(count, values.length); i++) {
-    if (i === 0) {
-      result.minister_count = parseInt(values[i]);
-    }
-    if (i === 1) {
-      result.president_name = values[i];
-    }
-    if (i === 2) {
-      result.president_term = parseInt(values[i]);
-    }
-    if (i === 3) {
-      result.prime_minister_name = values[i];
-    }
-    if (i === 4) {
-      result.vote_count = parseFloat(values[i]);
-    }
-  }
-  return result;
-}
-
-export function GovtSerialize(obj: Govt): string {
-  const count = 5;
-  let str = `[${count}]`;
-  str += `${obj.minister_count}`;
-  str += ';';
-  str += `${obj.president_name}`;
-  str += ';';
-  str += `${obj.president_term}`;
-  str += ';';
-  str += `${obj.prime_minister_name}`;
-  str += ';';
-  str += `${obj.vote_count.toFixed(floatPrecision)}`;
   return str;
 }
 
