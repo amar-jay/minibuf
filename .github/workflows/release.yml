@@ -1,0 +1,24 @@
+name: Release
+on:
+  workflow_run:
+    workflows: ["Build MiniBufc"]
+    types:
+      - completed
+
+jobs:
+  publish:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            minibufc-linux-amd64/minibufc-linux-amd64
+            minibufc-windows-amd64/minibufc-windows-amd64.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
