@@ -1,6 +1,10 @@
 # MiniBuf
 
-**minibuf** is a minimal, high-performance serialization library designed for MCU-to-MCU and device communication. It focuses on **simplicity, predictability, and bounded memory usage**, making it ideal for constrained embedded systems. Unlike JSON or protobuf, Buffer avoids keys and hierarchical structures, relying on a **fixed-order, schema-driven line format** with a maximum payload of 256 bytes.
+**minibuf** is a minimal, high-performance serialization library designed for MCU to MCU and device communication. It focuses on simplicity, predictability, and bounded memory usage, making it ideal for constrained embedded systems. Unlike JSON or protobuf, Buffer avoids keys and hierarchical structures, relying on a fixed-order, schema-driven line format with a maximum payload of 256 bytes.
+
+
+> [!IMPORTANT]  
+> Currently Its best to avoid using strings especially strings with `;` within. 
 
 ### Principles
 
@@ -82,16 +86,6 @@ if (err != MB_OK) {
 ```
 
 - Note that `minibuf.c` and `minibuf.h` is a single generated c and header file containing everything.
-
-<!---
-**Error codes:**
-
-- `MB_OK` — parsing successful
-- `MB_ERR_COUNT_MISMATCH` — count prefix does not match schema
-- `MB_ERR_PARSE_FLOAT` — invalid float value
-- `MB_ERR_PARSE_BOOL` — invalid boolean value
-- `MB_ERR_CRC_MISMATCH` — CRC check failed
--->
 
 #### TypeScript
 
